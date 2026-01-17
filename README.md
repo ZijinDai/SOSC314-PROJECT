@@ -8,7 +8,11 @@
   
 **PART II Research Question**
 
-  Our research is guided by a core question: “What systematic associations exist between the political leanings of media outlets, their framing of the ICE issue, and the structure of public discourse and sentiment within their YouTube comment sections?” 
+To what extent did the Minnesota shooting trigger a shift in public opinions regarding ICE on YouTube, and how do the temporal evolutions of ICE related online discussions reflect public perceptions of state repressive power and political polarization?
+
+RQ1 (Impact): Does the Minnesota shooting represent a significant causal breakpoint in the volume, sentiment, and thematic focus of ICE-related discourse over time?  
+RQ2 (Legitimacy): Does public perception on ICE's legitimacy as a federal institution changed overtime?  
+RQ3 (Polarization): To what degree are ideological and sentimental divergents showcased in online ICE related discusions? Are these divergents align with media discourses?  
 
 **PART III Data Source**
 
@@ -32,7 +36,8 @@
   *3.User comments*: Comment text, timestamps, vote counts, secondary comments  
   
 **PART IV the unit of analysis**
-
-To answer this, we will computationally map and compare the dominant narratives, emotional patterns, and ideological camps that emerge in these high-visibility spaces across media sources. Ultimately, this is an attempt to understand how YouTube works as a stage for one of America's most heated debates—shaped by the news people watch and the comments they write.
+1.Temperal analysis on development of ICE related events and online discussions, especially before and after the shoot in Minnesota, focusing on overall trend and transition.
+2.Text analysis on video content produced by selected media cooperations, exploring potential discursive strategies and ideological orientations.
+3.Text analysis on comment under selected videos, exploring public sentiment, perception on ICE as a federal institution, and ideological orientations.
 
 **PART V  data feasibility assessment**
