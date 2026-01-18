@@ -5,7 +5,8 @@
 **PART I Motivations**
 
   During last Thanksgiving, one project member witnessed protesters hoding "ICE out of RDU" signs alongside the highway from Raleigh to Durham. This first-hand witnessing of protest against activity of Immigration and Customs Enforcement(ICE) aligns with the escalating public debate over immigrantion issues,civil rights and the exercise of statepower. Data from the Wayback Machine indicates that public attention towards ICE reached an unprecedented historical peak in December 2024.This tension was undoubtly ignited by the recent shooting in Minnesota on Jan.7th, exacerbating the inherent conflicts between local and federal agencies, citizens and the state apparatus, as well as divergences between political ideologies.
-  
+  <img width="3075" height="1458" alt="bd78b5d327e2251f230ecbfaf1730c34" src="https://github.com/user-attachments/assets/21fa708d-cf9f-4f7b-9ea5-02e8f03da234" />
+
 **PART II Research Question**
 
 To what extent did the Minnesota shooting trigger a shift in public opinions regarding ICE on YouTube, and how do the temporal evolutions of ICE related online discussions reflect public perceptions of state repressive power and political polarization?
@@ -36,8 +37,14 @@ RQ3 (Polarization): To what degree are ideological and sentimental divergents sh
   *3.User comments*: Comment text, timestamps, vote counts, secondary comments  
   
 **PART IV the unit of analysis**
-1.Temperal analysis on development of ICE related events and online discussions, especially before and after the shoot in Minnesota, focusing on overall trend and transition.
-2.Text analysis on video content produced by selected media cooperations, exploring potential discursive strategies and ideological orientations.
-3.Text analysis on comment under selected videos, exploring public sentiment, perception on ICE as a federal institution, and ideological orientations.
+
+1.Temperal analysis on development of ICE related events and online discussions, especially before and after the shoot in Minnesota, focusing on overall trend and transition.  
+2.Text analysis on video content produced by selected media cooperations, exploring potential discursive strategies and ideological orientations.  
+3.Text analysis on comment under selected videos, exploring public sentiment, perception on ICE as a federal institution, and ideological orientations.  
 
 **PART V  data feasibility assessment**
+
+Using yt-dlp package, auto-generated captions(English), metadata(time, views, votes) and comments of videos from certain channels and certain tags are accessible.
+<img width="1914" height="668" alt="image" src="https://github.com/user-attachments/assets/7b9b6bf6-e0c9-4695-acfe-1fade6d0ac69" />
+<img width="615" height="767" alt="image" src="https://github.com/user-attachments/assets/afa8ea11-8231-4d70-89b5-8f5580c556b0" />
+
