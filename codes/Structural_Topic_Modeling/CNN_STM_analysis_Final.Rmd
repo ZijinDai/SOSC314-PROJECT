@@ -1,0 +1,345 @@
+---
+title: "CNN STM final version"
+author: "Xiaoye Zhu"
+date: "2026-02-12"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+"C:\Users\31745\OneDrive - Duke University\SOSC314\CNN data\CNN_Sentiment_Analysis_Results.csv"
+```
+
+```{r}
+library(stm)
+library(quanteda)
+library(readr)
+library(dplyr)
+library(ggplot2)
+library(purrr)
+library(tidyr)
+library(tidytext)
+```
+
+```{r}
+csv_path <- "C:/Users/31745/OneDrive - Duke University/SOSC314/CNN data/CNN_Sentiment_Analysis_Results.csv"
+```
+
+```{r}
+raw_data <- read.csv(csv_path, stringsAsFactors = FALSE)
+raw_data$emotion_l <- as.factor(raw_data$emotion_l)
+```
+
+```{r}
+# 1. Text cleaning and standardization
+processed_data <- raw_data %>%
+  filter(!is.na(comment_text)) %>%
+  mutate(
+    # lowercase
+    comment_text = tolower(comment_text),
+    # Complete common abbreviations to prevent the splitting of single-letter
+    comment_text = gsub("n't", " not", comment_text),
+    comment_text = gsub("'re", " are", comment_text),
+    comment_text = gsub("'s", " is", comment_text),
+    comment_text = gsub("'ve", " have", comment_text),
+    comment_text = gsub("'ll", " will", comment_text),
+    comment_text = gsub("'d", " would", comment_text),
+    comment_text = gsub("'m", " am", comment_text),
+    # Remove special characters and line breaks
+    comment_text = gsub("_x000d_", " ", comment_text), 
+    comment_text = gsub("[\r\n\t]", " ", comment_text),
+    # Remove the URL
+    comment_text = gsub("http\\S+", "", comment_text),
+    # Convert to ASCII encoding
+    comment_text = iconv(comment_text, to = "ASCII", sub = " "),
+    # Convert the number of likes
+    like_num = as.numeric(gsub("[^0-9.]", "", as.character(like_count)))
+  ) %>%
+  filter(!is.na(like_num))
+
+# 2. Build a corpus and perform word segmentation
+extra_stops <- c("don", "t", "s", "re", "ve", "m", "ll", "d", "isn", "doesn", 
+                 "wouldn", "can", "aren", "couldn", "shouldn", "won", "just", "get", "go",
+                 "yall", "y'all", "oh", "well", "bla", "blah","im","wow","hey",
+                 "smh", "bs", "theyre", "getting","gonna",
+                 "ago", "maybe", "guess", "thing", "every", "guy", "let", "make", "ever", "whatever",
+                 "everi", "mayb", "ca", "anyth", "whatev", "thin", "everyth")
+
+comment_corpus <- corpus(processed_data, text_field = "comment_text")
+
+toks <- tokens(comment_corpus, what = "word",
+               remove_punc = TRUE, remove_symbols = TRUE, remove_numbers = TRUE) %>%
+  tokens_remove(c(stopwords("en"), extra_stops)) %>%
+  tokens_wordstem(language = "en")
+```
+
+```{r}
+# 3. DFM
+dfm_counts <- dfm(toks)
+
+dfm_filtered <- dfm_trim(dfm_counts, 
+                         min_docfreq = 2)
+
+dfm_final <- dfm_subset(dfm_filtered, ntoken(dfm_filtered) > 0)
+
+cat("The number of valid documents retained after processing:", ndoc(dfm_final), "\n")
+```
+
+```{r}
+# 4. Convert and run the model
+out <- convert(dfm_final, to = "stm")
+
+out$documents <- lapply(out$documents, function(x) {
+  storage.mode(x) <- "integer"
+  return(x)
+})
+```
+
+```{r}
+stm_model_all <- stm(
+  documents = out$documents, 
+  vocab = out$vocab, 
+  K = 30, 
+  # Consider the category of emotions, the intensity of emotions, and the interaction between the two
+  prevalence =~ emotion_l + emotion_score + emotion_l * emotion_score + s(like_count), 
+  data = out$meta, 
+  max.em.its = 75, 
+  init.type = "Spectral",
+  verbose = TRUE
+)
+```
+
+```{r}
+save_path <- "C:/Users/31745/OneDrive - Duke University/SOSC314/CNN data/CNN_STM_Model_Result_all.RData"
+save(stm_model_all, out, file = save_path)
+```
+
+```{r}
+prep_effect_all <- estimateEffect(
+  formula = 1:30 ~ emotion_l + emotion_score + emotion_l * emotion_score + s(like_num), 
+  stmobj = stm_model_all, 
+  metadata = out$meta
+)
+```
+
+```{r}
+sem_coh_base_all <- semanticCoherence(stm_model_all, documents = out$documents)
+excl_base_all <- exclusivity(stm_model_all)
+quality_base <- as.numeric(scale(sem_coh_base_all)+scale(excl_base_all))
+
+top_15_base <- order(quality_base, decreasing = TRUE)[1:15]
+cat("The top 15 high-quality topics:", top_15_base, "\n")
+
+summary(prep_effect_all, topics = top_15_base) 
+
+plot(excl_base_all, sem_coh_base_all, main="Topic Quality: Base Model(CNN)", type="n", xlab="Exclusivity", ylab="Semantic Coherence")
+text(excl_base_all, sem_coh_base_all, labels=1:30, 
+     col = ifelse(1:30 %in% top_15_base, "red", "blue"),
+     cex = ifelse(1:30 %in% top_15_base, 1.2, 0.8),
+     font = ifelse(1:30 %in% top_15_base, 2, 1))
+
+```
+
+```{r}
+labelTopics(stm_model_all, topics = top_15_topics)
+```
+
+```{r}
+# 1. Extract the tags of all topics
+all_labels <- labelTopics(stm_model_all, n = 10) # Extract the first 10 words
+
+# 2. Specifically extract FREX words and convert them into Dataframes
+selected_topics_all <- c(30,18,1,15,2,25,28,4,14,8,23,11,10,21,24)
+
+frex_df_all <- data.frame(
+  Topic_ID = selected_topics_all,
+  FREX_Keywords = apply(all_labels$frex[selected_topics_all, ], 1, paste, collapse = ", ")
+)
+
+# 3. Export to a local file (saved in the current working directory)
+write_csv(frex_df_all, "emotional_High_Quality_Topics_FREX_all_revised.csv")
+
+print(frex_df_all)
+```
+
+```{r}
+library(dplyr)
+library(purrr)
+library(tidyr)
+library(readr)
+library(tidytext)
+library(SnowballC)
+
+# =========================================================
+# 1. Build a stem restoration mapping table
+# =========================================================
+toks_raw_for_mapping <- tokens(comment_corpus, remove_punc = TRUE, remove_numbers = TRUE) %>%
+  tokens_remove(stopwords("en"))
+
+stem_map <- data.frame(word = unlist(as.list(toks_raw_for_mapping))) %>%
+  mutate(stem = char_wordstem(word, language = "en")) %>%
+  group_by(stem, word) %>%
+  count() %>%
+  group_by(stem) %>%
+  slice_max(n, n = 1, with_ties = FALSE) %>%
+  ungroup() %>%
+  select(stem, word)
+```
+
+```{r}
+# =========================================================
+# 2. Extract the STM indicators and construct data table
+# =========================================================
+# Extract the label indicators of the first 1,000 words at one time
+labels_deep <- labelTopics(stm_model_all, n = 1000)
+
+# Extract the ranking
+get_ranks <- function(metric_matrix, name) {
+  map_df(selected_topics_all, ~data.frame(
+    topic = .x, 
+    term = metric_matrix[.x, ], 
+    rank = 1:ncol(metric_matrix), 
+    metric = name
+  ))
+}
+
+all_ranks <- bind_rows(
+  get_ranks(labels_deep$frex, "frex"),
+  get_ranks(labels_deep$lift, "lift"),
+  get_ranks(labels_deep$score, "score")
+) %>% 
+  pivot_wider(names_from = metric, values_from = rank, names_glue = "{metric}_rank")
+
+# master_topic_table_clean
+master_topic_table_clean <- tidy(stm_model_all, matrix = "beta") %>%
+  filter(topic %in% selected_topics_all) %>%
+  left_join(all_ranks, by = c("topic", "term")) %>%
+  left_join(stem_map, by = c("term" = "stem")) %>%
+  mutate(readable_word = coalesce(word, term)) %>%
+  # Filter out special characters and reorganize the Beta ranking
+  filter(!grepl("_x000d_", term) & !grepl("_x000d_", readable_word)) %>%
+  group_by(topic) %>%
+  arrange(topic, desc(beta)) %>%
+  mutate(word_rank_by_beta = row_number()) %>%
+  ungroup() %>%
+  select(topic, readable_word, stem = term, prob_beta = beta, 
+         frex_rank, lift_rank, score_rank, word_rank_by_beta)
+```
+
+```{r}
+# =========================================================
+# 3. Output csv file
+# =========================================================
+# write_csv(master_topic_table_clean %>% filter(word_rank_by_beta <= 50), "CNN_Topic_Full_50_Clean_all.csv")
+# write_csv(master_topic_table_clean %>% filter(word_rank_by_beta <= 10), "CNN_Topic_Summary_10_Clean_all.csv")
+```
+
+```{r}
+# =========================================================
+# 4. Extract the FREX word from the main table and print 
+# =========================================================
+cat("--- Select 15 topics of lemmatized FREX words (for manual tagging) CNN ---\n\n")
+
+walk(selected_topics_all, function(i) {
+  # 直接筛选主表中的 FREX 前 10 名
+  frex_words <- master_topic_table_clean %>%
+    filter(topic == i) %>%
+    arrange(frex_rank) %>%
+    slice_head(n = 10) %>%
+    pull(readable_word)
+  
+  cat(paste0("Topic ", i, ": ", paste(frex_words, collapse = ", "), "\n"))
+})
+```
+```{r}
+# Label topics manually
+manual_labels <- c(
+  "30" = "Topic 30: Emotional resilience & Human struggle",
+  "18" = "Topic 18: Digital evidence & Camera perspectives(possiblly Renee Good's case)",
+  "1" = "Topic 1: Use of lethal force & Law enforcement encounters",
+  "15" = "Topic 15: Political conflict & Retributive rhetoric (FAFO)",
+  "2" = "Topic 2: Traffic confrontations & Roadway interference",
+  "25" = "Topic 25: Immigration policy & Racial profiling debates",
+  "28" = "Topic 28: Democratic values vs. Authoritarian fears",
+  "4" = "Topic 4: ICE arrest Korean workers in Hyundai factory, Georgia",
+  "14" = "Topic 14: Emergency roadside incidents & Medical transport",
+  "8" = "Topic 8: Criminal investigations & Gang-related detentions",
+  "23" = "Topic 23: Partisan politics & Presidential administration critiques",
+  "11" = "Topic 11: Personal insults & Physical appearance critiques",
+  "10" = "Topic 10: Ideological condemnation & National decline",
+  "21" = "Topic 21: Civil unrest & Paramilitary/Guard presence",
+  "24" = "Topic 24: Political accountability & Regional leadership (Kristi Noem)"
+)
+```
+
+```{r}
+# Extraction: Establish a full-volume ranking database
+labels_deep <- labelTopics(stm_model_all, n = 1000) 
+
+# Define an internal function to extract rankings and reduce repetitive code
+get_ranks <- function(metric_matrix, name) {
+  map_df(selected_topics_all, ~data.frame(
+    topic = .x, term = metric_matrix[.x, ], 
+    rank = 1:ncol(metric_matrix), metric = name
+  ))
+}
+
+# Obtain the rankings of all indicators at one time
+all_ranks <- bind_rows(
+  get_ranks(labels_deep$frex, "frex"),
+  get_ranks(labels_deep$lift, "lift"),
+  get_ranks(labels_deep$score, "score")
+) %>% tidyr::pivot_wider(names_from = metric, values_from = rank, names_glue = "{metric}_rank")
+
+
+```
+
+```{r}
+#Prepare the drawing data
+td_gamma_all <- tidy(stm_model_all, matrix = "gamma")
+
+heatmap_data_final <- td_gamma %>%
+  # 1. Filter the selected topic
+  filter(topic %in% selected_topics_all) %>%
+  # 2. Merge the metadata and explicitly handle the renaming
+  inner_join(
+    mutate(out$meta, document = row_number()), 
+    by = "document",
+    suffix = c("", ".meta") 
+  ) %>%
+  mutate(like_group = cut(like_num, 
+                          breaks = c(-Inf, 0, 5, 20, 100, 500, 1000, Inf), 
+                          labels = c("0 Likes", "1-5 Likes", "6-20 Likes", "20-100 Likes",
+                                     "100-500 Likes", "500-1000 Likes", "1000+ Likes"))) %>%
+  group_by(like_group, topic) %>%
+  summarise(avg_gamma = mean(gamma, na.rm = TRUE), .groups = 'drop') %>%
+  mutate(topic_label = manual_labels[as.character(topic)])
+```
+
+```{r}
+# Plot
+ggplot(heatmap_data_final, aes(x = like_group, y = reorder(topic_label, topic), fill = avg_gamma)) +
+  geom_tile(color = "white", linewidth = 0.1) + 
+  scale_fill_distiller(
+    palette = "YlOrRd", 
+    direction = 1, 
+    name = "Avg Prop.",
+    trans = "sqrt" 
+  ) +
+  theme_minimal() +
+  labs(
+    title = "High-Quality Topics (Top 15) vs Engagement(CNN)",
+    subtitle = "Y-axis labels are manually curated based on restored FREX keywords.",
+    x = "Engagement Level (Like Groups)",
+    y = ""
+  ) +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1, size = 10),
+    axis.text.y = element_text(size = 9),
+    panel.grid = element_blank()
+  )
+```
+
