@@ -1,0 +1,73 @@
+---
+title: "trial stm"
+author: "Xiaoye Zhu"
+date: "2026-02-07"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+# ==========================================
+# 1. Environmental preparation and data cleaning
+# ==========================================
+library(stm)
+library(quanteda)
+library(lubridate)
+library(readr)
+library(ggplot2)
+library(dplyr)
+library(parallel)
+
+file_path <- "C://Users//31745//OneDrive - Duke University//SOSC314//FOX//Fox_Comment_Details (1).csv"
+raw_data <- read_csv(file_path)
+
+clean_data <- raw_data %>%
+  filter(!is.na(comment_text)) %>%
+  mutate(date = as.Date(timestamp),
+         comment_text = gsub("_x000D_", " ", comment_text),
+         time_days = as.numeric(date - min(date, na.rm = TRUE))) %>%
+  filter(!is.na(date))
+
+```
+
+```{r}
+# ==========================================
+# 2. Subset sampling (used to find Ideal K, saving time)
+# ==========================================
+set.seed(123)
+sample_data <- clean_data %>% sample_n(min(20000, nrow(clean_data)))
+
+processed_tokens <- tokens(corpus(sample_data, text_field = "comment_text"), 
+                           remove_punc = TRUE, remove_numbers = TRUE, remove_symbols = TRUE) %>%
+  tokens_remove(stopwords("en")) %>%
+  tokens_ngrams(n = 1:2)
+
+dfm_sample <- dfm(processed_tokens) %>% dfm_trim(min_docfreq = 10)
+out_sample <- convert(dfm_sample, to = "stm")
+```
+
+```{r}
+# ==========================================
+# 3. Diagnose K using the built-in functions of STM
+# ==========================================
+
+# Test the range of K = 10, 20, 30, 40, 50, and 60
+k_range <- seq(10, 60, by = 10)
+
+
+diag_k <- searchK(out_sample$documents, 
+                  out_sample$vocab, 
+                  K = k_range, 
+                  prevalence = ~ s(time_days), 
+                  data = out_sample$meta, 
+                  cores = 1,              
+                  init.type = "Spectral")
+
+
+plot(diag_k)
+```
+
+
