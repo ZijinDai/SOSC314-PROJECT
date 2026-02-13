@@ -1,4 +1,4 @@
-# SOSC314-PROJECT
+# SOSC314-PROJECT-Media presentation and public opinion toward ICE on Youtube
 #Zijin
 #Xiaoye
 
@@ -8,33 +8,23 @@
   <img width="3075" height="1458" alt="bd78b5d327e2251f230ecbfaf1730c34" src="https://github.com/user-attachments/assets/21fa708d-cf9f-4f7b-9ea5-02e8f03da234" />
 
 **PART II Research Question**
-
-To what extent did the Minnesota shooting trigger a shift in public opinions regarding ICE on YouTube, and how do the temporal evolutions of ICE related online discussions reflect public perceptions of state repressive power and political polarization?
-
-RQ1 (Impact): Does the Minnesota shooting represent a significant causal breakpoint in the volume, sentiment, and thematic focus of ICE-related discourse over time?  
-RQ2 (Legitimacy): Does public perception on ICE's legitimacy as a federal institution changed overtime?  
-RQ3 (Polarization): To what degree are ideological and sentimental divergents showcased in online ICE related discusions? Are these divergents align with media discourses?  
+1.What are the primary themes in media coverage and public discourse surrounding ICE-related events?
+2.To what degree are ideological and sentimental divergents showcased in online ICE related discusions? Are these divergents align with media discourses?  
 
 **PART III Data Source**
 
-***a.Platform Selection***
+***a.Platform, Channel and Time Selection***
 
   We selected YouTube, the world's largest stream media extensive news coverage, as our primary data source, as our primary data source.This choice is justified by the immense scale and depth of engagement on this platform. When searching "ICE Minnesota" as a topic term on YouTube, numerous videos have garnered millions of views and thousands to tens of thousands of comments, indicating exceptionally high public attention and engagement with this topic on this platform. This provides abundant data for our research, ensuring a sufficient sample size for analyzing public opinion and media framing.
+  We selected the YouTube channel of CNN and Fox news as two sources, as they are two mainstream medias with contrasting ideological stances and high audience engagement, which provides rich potential data to answer our RQs.
+  We collected videos from 2025/01/01, for Trump's second term stimulated the activity of ICE and people's raising attentions.
+  
+***b.Data Collection***
 
-***b.Video Selection***
-  
-  We are still exploring effective way of selecting specific videos for data collections. Here are two potential directions:
-  
-  1.Determine a list of certain terms relating ICE issues for searching,eg "ICE minnesota"; searching these term and filter according to view counts; identifying corporate media channels showing up; looking into all ICE related videos under these channels.  
-  2.Get videos from specific hashtag related to ICE, eg "ICE shooting"; look into both videos from media channels and shorts.
-  
-***c.Types of data to be collected***
-
-  We plan to scrape the following data points from relevant videos:
-  
-  *1.Video content*: Titles, transcripts  
-  *2.Metadata*: Channel names, publication dates, view counts, like/dislike ratios    
-  *3.User comments*: Comment text, timestamps, vote counts, secondary comments  
+  We used package yt-dlp to collect all videos under CNN & Fox channels during 2025/01/01 and 2026/1/21 whose title includes the word “ICE”. 
+  We collected 66 videos from CNN with video id,	title,	upload date,	view count, description and transcript, together with 141372 comments with user id, timestamp and like count. 
+  We collectede 62 videos and 125222 comments for Fox news using the same codes. 
+  All data was sorted into csv files.
   
 **PART IV the unit of analysis**
 
@@ -42,9 +32,57 @@ RQ3 (Polarization): To what degree are ideological and sentimental divergents sh
 2.Text analysis on video content produced by selected media cooperations, exploring potential discursive strategies and ideological orientations.  
 3.Text analysis on comment under selected videos, exploring public sentiment, perception on ICE as a federal institution, and ideological orientations.  
 
-**PART V  data feasibility assessment**
+**Quick Links**
+[Data](./data/): 100+ video transcripts & 280000+ comments with metadata collected from official YouTUbe channel of CNN and Fox news.
+[Codes](./codes/):Scripts for data scraping, data cleaning, word frequency, topic modeling and emotion analysis
+[Tables](./Tables/):Calculated results for word frequency, topic modeling and emotion analysis
+[Figures](./Figures/):Visualized results for word frequency, topic modeling and emotion analysis
 
-Using yt-dlp package, auto-generated captions(English), metadata(time, views, votes) and comments of videos from certain channels and certain tags are accessible.
-<img width="1914" height="668" alt="image" src="https://github.com/user-attachments/assets/7b9b6bf6-e0c9-4695-acfe-1fade6d0ac69" />
-<img width="615" height="767" alt="image" src="https://github.com/user-attachments/assets/afa8ea11-8231-4d70-89b5-8f5580c556b0" />
-
+**Repository Structure**
+│
+├─Background
+│      ICE_Timeline_textandimage.ipynb
+│
+├─codes
+│  │
+│  ├─1. data collection
+│  │      CNN_data_collection.ipynb
+│  │      comment_cleaning&xlsx_to_csv_code.
+│  │
+│  │─2. Adjusted_Frequency&_Topic_modeling_code.ipynb
+│  ├─3. Emotion_analysis_and_DTM
+│  │      cnn_anger_ice_strict_pipeline_py.ipynb
+│  │      Sentiment_Analysis&_DTM_of_CNN_comment.ipynb
+│  │      Sentiment_Analysis&_DTM_of_FOX_comment.ipynb
+│  │
+│  └─4. Structural_Topic_Modeling
+│          CNN_STM_analysis_Final.Rmd
+│          Fox 2stage STM analysis(final).Rmd
+│          Fox-Ideal K.Rmd
+│          readme
+│
+├─data
+│      CNN_Comments_Final.zip
+│      CNN_Video_Final.csv
+│      Fox_Comment_Details.csv
+│      Fox_Video_Summary.csv
+│
+├─Figures
+│      CNN_Comment_emotion_distribution.png
+│      CNN_Comment_emotion_distribution_proportion.png
+│      CNN_comment_lemmatized_FREX_Words.png
+│      CNN_comment_Topic_Engagement.png
+│      CNN_comment_Top_15_quality_topic_vis.png
+│      Fox_Comment_emotion_distribution.jpg
+│      Fox_Comment_emotion_distribution_proportion.png
+│      Fox_comment_lemmatized_FREX_Words.png
+│      Fox_comment_Topic_Engagement.png
+│      Fox_comment_Top_15_quality_topic_vis.png
+│
+└─Tables
+        CNN_Emotion_DTM_Analysis_Results.zip
+        CNN_frequency_top_50_words_revised.csv
+        CNN_STM_Topic_FREXwords_Summary_10.csv
+        FOX_Emotion_DTM_Analysis_Results.zip
+        Fox_frequency_top_50_words.csv
+        Fox_STM_Topic_words_Summary_10.csv
