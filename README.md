@@ -27,11 +27,18 @@
   We collectede 62 videos and 125222 comments for Fox news using the same codes. 
   All data was sorted into csv files.
   
-## PART IV the unit of analysis
+## Units of analysis
 
-1.Temperal analysis on development of ICE related events and online discussions, especially before and after the shoot in Minnesota, focusing on overall trend and transition.  
-2.Text analysis on video content produced by selected media cooperations, exploring potential discursive strategies and ideological orientations.  
-3.Text analysis on comment under selected videos, exploring public sentiment, perception on ICE as a federal institution, and ideological orientations.  
+***a.Video Content(Transcript)***
+1. Word Frequency: most frequently mentioned words in video transcripts
+2. Topic Modeling: cluster main topics from video transcripts
+
+***b.Comments***
+1. Structural Topic Modeling:
+2. Emotion analysis:
+3. Dynamic Topic Modeling:
+   
+## Main Findings
 
 ## 🔗 Quick Links
 
