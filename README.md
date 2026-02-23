@@ -31,14 +31,29 @@
 
 ***a.Video Content(Transcript)***
 1. Word Frequency: most frequently mentioned words in video transcripts
-2. Topic Modeling: cluster main topics from video transcripts
+2. LDA Topic Modeling: clustered main topics from video transcripts using the Gensim package
 
 ***b.Comments***
-1. Structural Topic Modeling:
-2. Emotion analysis:
-3. Dynamic Topic Modeling:
+1. Structural Topic Modeling:analyze main topics from comments together with engagements(likecounts)
+2. Emotion analysis: utilized the Hugging Face DistilRoBERTa-base model to categorize comment emotions; identified stances of comments catagorized into "anger"
    
-## Main Findings
+## Main Findings 
+Our analysis reveals a clear divergence in framing between the two media outlets and their respective audience reactions:
+
+1. Media Outlet Perspectives (Framing)
+CNN: Primarily reports from an immigration-centric perspective, focusing on specific humanitarian events and individual cases.
+Fox News: Predominantly adopts a law enforcement perspective, framing the narrative around border security and legal procedures.
+
+2. Common Themes in Audience Comments: audiences from both channels express high levels of frustration with corruption and the perceived failure of governmental institutions.
+
+3. Divergent Stances in Comments
+Target of Dissatisfaction:
+CNN Audiences: Exhibit a significantly higher rate of opposition toward ICE agents (~88%,40% higher than that under Fox)
+Fox News Audiences: Direct their dissatisfaction primarily toward local government failures and perceived corruption in municipal leadership.
+
+4. Engagement of topics:
+CNN Audiences:high engagement(likecounts) in specific cases(eg: shootings in Minnesota, arrests in Hyundai factory...)
+Fox News Audiences: engage more with dissatisfaction towards local governance in regions where ICE-related incidents occurred.
 
 ## 🔗 Quick Links
 
