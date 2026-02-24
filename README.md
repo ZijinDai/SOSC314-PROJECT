@@ -10,7 +10,7 @@
 
 ## Research Questions
 1. What are the primary themes in media coverage and public discourse surrounding ICE-related events?  
-2. To what degree are ideological and sentimental divergents showcased in online ICE related discusions? Are these divergents align with media discourses?  
+2. To what degree are ideological and emotional divergences showcased in online ICE related discusions? Are these divergences align with media discourses?  
 
 ## Data Source
 
@@ -46,14 +46,14 @@ Fox News: Predominantly adopts a law enforcement perspective, framing the narrat
 
 2. Common Themes in Audience Comments: audiences from both channels express high levels of frustration with corruption and the perceived failure of governmental institutions.
 
-3. Divergent Stances in Comments
-Target of Dissatisfaction:
-CNN Audiences: Exhibit a significantly higher rate of opposition toward ICE agents (~88%,40% higher than that under Fox)
+3. Divergent Stances in Comments  
+Target of Dissatisfaction:  
+CNN Audiences: Exhibit a significantly higher rate of opposition toward ICE agents (~88%,40% higher than that under Fox)   
 Fox News Audiences: Direct their dissatisfaction primarily toward local government failures and perceived corruption in municipal leadership.
 
-4. Engagement of topics:
-CNN Audiences:high engagement(likecounts) in specific cases(eg: shootings in Minnesota, arrests in Hyundai factory...)
-Fox News Audiences: engage more with dissatisfaction towards local governance in regions where ICE-related incidents occurred.
+4. Engagement of topics:  
+   CNN Audiences:high engagement(likecounts) in specific cases(eg: shootings in Minnesota, arrests in Hyundai factory...)  
+   Fox News Audiences: engage more with dissatisfaction towards local governance in regions where ICE-related incidents occurred.
 
 ## 🔗 Quick Links
 
