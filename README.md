@@ -10,7 +10,7 @@
 
 ## Research Questions
 1. What are the primary themes in media coverage and public discourse surrounding ICE-related events?  
-2. To what degree are ideological and emotional divergences showcased in online ICE related discusions? Are these divergences align with media discourses?  
+2. To what degree are ideological and emotional divergences showcased in online ICE related discusions? Do these divergences align with media discourses?  
 
 ## Data Source
 
