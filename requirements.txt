@@ -1,0 +1,11 @@
+yt-dlp
+pandas
+numpy
+gensim
+transformers
+torch
+matplotlib
+seaborn
+spacy
+scikit-learn
+pyLDAvis
