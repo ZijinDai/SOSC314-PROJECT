@@ -2,11 +2,109 @@
 #Zijin
 #Xiaoye
 
-## Project Motivations
+## Link to Project Report
 
-  During last Thanksgiving, one project member witnessed protesters hoding "ICE out of RDU" signs alongside the highway from Raleigh to Durham. This first-hand witnessing of protest against activity of Immigration and Customs Enforcement(ICE) aligns with the escalating public debate over immigrantion issues,civil rights and the exercise of statepower.   
-  Data from the Wayback Machine indicates that public attention towards ICE reached an unprecedented historical peak in December 2024.This tension was undoubtly ignited by the recent shooting in Minnesota on Jan.7th, exacerbating the inherent conflicts between local and federal agencies, citizens and the state apparatus, as well as divergences between political ideologies.
-  <img width="3075" height="1458" alt="bd78b5d327e2251f230ecbfaf1730c34" src="https://github.com/user-attachments/assets/21fa708d-cf9f-4f7b-9ea5-02e8f03da234" />
+https://zijindai.github.io/SOSC314-PROJECT/
+
+## Project Summary
+
+This computational social science project investigates how CNN and Fox News frame ICE-related events (specifically the 2025 Minnesota shooting) and how YouTube audiences respond. We utilize NLP techniques including LDA, Structural Topic Modeling (STM), and Emotion Analysis on 280,000+ comments to uncover ideological divergences.
+
+## 🔗 Quick Links
+
+- 📂 [Data](./data/) – 100+ video transcripts & 280,000+ comments 
+- 💻 [Codes](./codes/) – Scripts for scraping, cleaning, modeling 
+- 📊 [Tables](./Tables/) – Word frequency, topic & emotion results 
+- 📈 [Figures](./Figures/) – Visualized results
+
+## Repository Structure
+
+```text
+SOSC314-PROJECT/
+├── README.md
+├── Background/
+│   └── ICE_Timeline_textandimage.ipynb
+├── codes/
+│   ├── Adjusted_Frequency&_Topic_modeling_code.ipynb
+│   ├── data collection/
+│   │   ├── CNN_data_collection.ipynb
+│   │   └── comment_cleaning&xlsx_to_csv_code.ipynb
+│   ├── Emotion_analysis_and_DTM/
+│   │   ├── cnn_anger_ice_strict_pipeline_py.ipynb
+│   │   ├── Sentiment_Analysis&_DTM_of_CNN_comment.ipynb
+│   │   └── Sentiment_Analysis&_DTM_of_FOX_comment.ipynb
+│   └── Structural_Topic_Modeling/
+│       ├── CNN_STM_analysis_Final.Rmd
+│       ├── Fox 2stage STM analysis(final).Rmd
+│       ├── Fox-Ideal K.Rmd
+│       └── readme
+├── data/
+│   ├── CNN_Comments_Final.zip
+│   ├── CNN_Video_Final.csv
+│   ├── Fox_Comment_Details.csv
+│   └── Fox_Video_Summary.csv
+├── Figures/
+│   ├── CNN_Comment_emotion_distribution.png
+│   ├── CNN_Comment_emotion_distribution_proportion.png
+│   ├── CNN_comment_lemmatized_FREX_Words.png
+│   ├── CNN_comment_Topic_Engagement.png
+│   ├── CNN_comment_Top_15_quality_topic_vis.png
+│   ├── Fox_Comment_emotion_distribution.jpg
+│   ├── Fox_Comment_emotion_distribution_proportion.png
+│   ├── Fox_comment_lemmatized_FREX_Words.png
+│   ├── Fox_comment_Topic_Engagement.png
+│   └── Fox_comment_Top_15_quality_topic_vis.png
+└── Tables/
+    ├── CNN_Emotion_DTM_Analysis_Results.zip
+    ├── CNN_frequency_top_50_words_revised.csv
+    ├── CNN_STM_Topic_FREXwords_Summary_10.csv
+    ├── FOX_Emotion_DTM_Analysis_Results.zip
+    ├── Fox_frequency_top_50_words.csv
+    └── Fox_STM_Topic_words_Summary_10.csv
+```
+## 🛠 Installation & Reproducibility
+
+***Prerequisites***
+
+Python 3.8+
+
+R 4.0+
+
+***Environment Setup***
+
+Python Dependencies
+
+Install the required libraries using the provided requirements.txt file:
+```
+pip install -r requirements.txt
+```
+R Dependencies
+
+To run the Structural Topic Modeling (STM) and visualization scripts, please install the following packages in your R console:
+```
+install.packages(c("stm", "ggplot2", "knitr", "quanteda", "geometry","readr","purrr","tidyr","tidytext"))
+```
+
+***Execution Order (Run Guide)***
+
+To reproduce the results, please run the scripts in the following order:
+
+**Data Collection:** codes/data collection/CNN_data_collection.ipynb
+
+**Preprocessing:** codes/data collection/comment_cleaning&xlsx_to_csv_code.ipynb
+
+**Topic Modeling**: codes/Adjusted_Frequency&_Topic_modeling_code.ipynb
+
+**Emotion Analysis**: codes/Emotion_analysis_and_DTM/...
+
+**Structural Topic Modeling(R)**: codes/Structural_Topic_Modeling/... 
+
+
+## 📊 Data Access
+
+The raw datasets are stored in the /data folder. Due to file size limits on GitHub, some large files (like CNN_Comments_Final.zip) are compressed.
+
+Note on Reproducibility: If you wish to scrape fresh data, refer to the data collection scripts.
 
 ## Research Questions
 1. What are the primary themes in media coverage and public discourse surrounding ICE-related events?  
@@ -55,55 +153,4 @@ Fox News Audiences: Direct their dissatisfaction primarily toward local governme
    CNN Audiences:high engagement(likecounts) in specific cases(eg: shootings in Minnesota, arrests in Hyundai factory...)  
    Fox News Audiences: engage more with dissatisfaction towards local governance in regions where ICE-related incidents occurred.
 
-## 🔗 Quick Links
 
-- 📂 [Data](./data/) – 100+ video transcripts & 280,000+ comments 
-- 💻 [Codes](./codes/) – Scripts for scraping, cleaning, modeling 
-- 📊 [Tables](./Tables/) – Word frequency, topic & emotion results 
-- 📈 [Figures](./Figures/) – Visualized results 
-
-
-## Repository Structure
-
-```text
-SOSC314-PROJECT/
-├── README.md
-├── Background/
-│   └── ICE_Timeline_textandimage.ipynb
-├── codes/
-│   ├── Adjusted_Frequency&_Topic_modeling_code.ipynb
-│   ├── data collection/
-│   │   ├── CNN_data_collection.ipynb
-│   │   └── comment_cleaning&xlsx_to_csv_code.ipynb
-│   ├── Emotion_analysis_and_DTM/
-│   │   ├── cnn_anger_ice_strict_pipeline_py.ipynb
-│   │   ├── Sentiment_Analysis&_DTM_of_CNN_comment.ipynb
-│   │   └── Sentiment_Analysis&_DTM_of_FOX_comment.ipynb
-│   └── Structural_Topic_Modeling/
-│       ├── CNN_STM_analysis_Final.Rmd
-│       ├── Fox 2stage STM analysis(final).Rmd
-│       ├── Fox-Ideal K.Rmd
-│       └── readme
-├── data/
-│   ├── CNN_Comments_Final.zip
-│   ├── CNN_Video_Final.csv
-│   ├── Fox_Comment_Details.csv
-│   └── Fox_Video_Summary.csv
-├── Figures/
-│   ├── CNN_Comment_emotion_distribution.png
-│   ├── CNN_Comment_emotion_distribution_proportion.png
-│   ├── CNN_comment_lemmatized_FREX_Words.png
-│   ├── CNN_comment_Topic_Engagement.png
-│   ├── CNN_comment_Top_15_quality_topic_vis.png
-│   ├── Fox_Comment_emotion_distribution.jpg
-│   ├── Fox_Comment_emotion_distribution_proportion.png
-│   ├── Fox_comment_lemmatized_FREX_Words.png
-│   ├── Fox_comment_Topic_Engagement.png
-│   └── Fox_comment_Top_15_quality_topic_vis.png
-└── Tables/
-    ├── CNN_Emotion_DTM_Analysis_Results.zip
-    ├── CNN_frequency_top_50_words_revised.csv
-    ├── CNN_STM_Topic_FREXwords_Summary_10.csv
-    ├── FOX_Emotion_DTM_Analysis_Results.zip
-    ├── Fox_frequency_top_50_words.csv
-    └── Fox_STM_Topic_words_Summary_10.csv
